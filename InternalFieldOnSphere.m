@@ -1,10 +1,13 @@
 function InternalFieldOnSphere
-%%  This function calculates evolution of electrical field at the surface of  droplet
+%%  This function calculates evolution of electrical field in and around the sphere.
 %      aa    particle radius in nanometers
 
 %      n_out refractive index of medium
 % l     number of multipoles in sum
 % t     time
+
+%% Forumalas were taken from the Bohren & Huffman "Absorption and Scattering of Light by Small Particles"
+% Code written by G. Derkachov & A. Derkachova
 
 % Initial conditions
     n_in = 1.45;                     % droplets refractive index

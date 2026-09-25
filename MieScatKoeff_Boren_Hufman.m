@@ -1,11 +1,10 @@
 function [a,b] = MieScatKoeff_Boren_Hufman(q,n)
-%  function [eBl mBl] = MieScatKoeff(q,n)
-% Funkcia oblicza wspulczynniki eBl mBl
-% q = 2*pi*a / lambda
-
-% lambda  - dlugosc fali 
-% n - zespolony wspulczynnik zalamania sfery wzgledem osrodka
-% n = 1.33;
+% 
+%  q = 2*pi*a / lambda -- the size parameter
+%
+% lambda  - wavelength
+% n - complex refractive index of medium
+% 
 
 fjn = @(x,l) ( sqrt(pi/x/2)*besselj( (l+0.5),x) );
 fpsi = @(x,l) x.*( sqrt(pi/x/2)*besselj( (l+0.5),x) );

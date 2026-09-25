@@ -1,11 +1,26 @@
 function InternalFieldOnSphere
-%%  This function calculates evolution of electrical field in and around the sphere.
-%      aa    particle radius in nanometers
+%    This function allows to calculate the spatial distribution of the 
+%  electric field inside (internal field) and outside (near-field) of a uniform sphere of radius
+%  *aa* and complex refractive index *m* using rigorous Mie theory.
+%  -------------
+%     aa -- particle radius in nanometers
+%     n_out --  refractive index of medium
+%     l --      number of multipoles in sum
+%     t --      time
+% =======================================
+% The theoretical framework, vector spherical wave functions, and 
+%  internal/external expansion coefficients (`a_n`, `b_n`, `c_n`, `d_n`) are taken from:
+%  Bohren, C. F., & Huffman, D. R. (1983). 
+%  Absorption and Scattering of Light by Small Particles. 
+%  New York: Wiley-Interscience. 
+%  (Specifically Chapter 4: "The Mie Theory", 
+%    sections on internal fields and field 
+%    expressions inside and outside the sphere).
 
-%      n_out refractive index of medium
-% l     number of multipoles in sum
-% t     time
-
+% If you use this code in your research, please refer it as:
+%   A. Derkachova & G. Derkahcov,
+%   ON2.7 Group of Optical Characterisation of Micro- and Nanoobjects Institute of Physics,
+%    Polish Academy of Sciences (2026). 
 %% Forumalas were taken from the Bohren & Huffman "Absorption and Scattering of Light by Small Particles"
 % Code written by G. Derkachov & A. Derkachova
 

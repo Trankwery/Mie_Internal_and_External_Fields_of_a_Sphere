@@ -3,7 +3,7 @@ function InternalFieldOnSphere
 %  electric field inside (internal field) and outside (near-field) of a uniform sphere of radius
 %  *aa* and complex refractive index *m* using rigorous Mie theory.
 %  -------------
-%     aa -- particle radius in nanometers
+%     aa -- sphere radius in nanometers
 %     n_out --  refractive index of medium
 %     l --      number of multipoles in sum
 %     t --      time
@@ -21,45 +21,44 @@ function InternalFieldOnSphere
 %   A. Derkachova & G. Derkahcov,
 %   ON2.7 Group of Optical Characterisation of Micro- and Nanoobjects Institute of Physics,
 %    Polish Academy of Sciences (2026). 
-%% Forumalas were taken from the Bohren & Huffman "Absorption and Scattering of Light by Small Particles"
-% Code written by G. Derkachov & A. Derkachova
-
+%
+% =============================================================================================
 % Initial conditions
-    n_in = 1.45;                     % droplets refractive index
-    n_out = 1;                        % ivironment refractive index
-    m = n_in./n_out;              % effective refractive index
-    aa = 38780:-0.1:38760  ;  %2815:-1:2e3; %[nm]  % vector of droplet radiuses
-    lambda = 805;                 %[nm]   % wavelenght of insident beam
+    n_in = 1.45;                      % refractive index of sphere
+    n_out = 1;                        % refractive index of medium
+    m = n_in./n_out;                  % effective refractive index
+    aa = 38780:-0.1:38760  ;          % vector of droplet radiuses [nm]
+    lambda = 805;                     % wavelenght of insident beam [nm]
     E_0 =  1;                         % amplitude of insident field
     Step = 1;
-    Theta = 0: Step: 180;   % Range of angles changes
-    tt = Theta*pi/180;          % Range of angles in radians
-    Fi = 0;                            % Range of angle changes (elevation angle)
+    Theta = 0: Step: 180;             % Range of angles [degree]
+    tt = Theta*pi/180;                % Range of angles [radians]
+    Fi = 0;                           % Range of angle changes (elevation angle) [radians]
 
     S = 'Time estimation...';
     wb = waitbar(0,S);
     set(wb,'position',[447.75,243.75,270.0,56.25]);
     hf = figure('position',[509,448,560,420]);
     ha = axes;
-    SEi = zeros(1,length(aa)); % Total energy inside droplet
+    SEi = zeros(1,length(aa));                         % Total energy inside droplet
     for ia = 1:length(aa)
         % Time estimation
             t_tic = tic;
             waitbar(ia./length(aa),wb,S);
 
-            q = 2*pi*aa(ia)*n_out./lambda;       %out of the sphere size parameter
+            q = 2*pi*aa(ia)*n_out./lambda;             % out of the sphere size parameter
 
         % Mie scattering coefficients
         [a, b] = MieScatKoeff_Boren_Hufman(q, m);
         [c, d] = MieScatKoeff_Boren_Hufman_cd(q, m);
-        nmax = length(a);                                % The number of harmonics
+        nmax = length(a);                              % The number of harmonics
 
-        rr = linspace(0,aa(ia)*1.5,3e2);           % Scanning range linspace(0,aa(ia)*2,3e2)
-        EE = zeros(length(rr),length(Theta));  % Initialization of electric field matrix
+        rr = linspace(0,aa(ia)*1.5,3e2);               % Scanning range linspace(0,aa(ia)*2,3e2)
+        EE = zeros(length(rr),length(Theta));          % Initialization of electric field matrix
         wb2 = waitbar(0,'Scanning progress...');
         set(wb2,'position',[449.250,141.0,270.0,56.25]);
 
-        for kkr = length(rr):-1:1 % Scanning loop
+        for kkr = length(rr):-1:1                      % Scanning loop
             waitbar((1-length(rr)\kkr),wb2)
             % initialisation of matrices
             Er = zeros(length(Theta),length(Fi) );
@@ -120,7 +119,7 @@ function InternalFieldOnSphere
         for ii = 1:length(rr)
             [XX(ii,:),YY(ii,:)] = pol2cart(tt,rr(ii));
         end
-        % Drawing and saving data
+        %       ------------------ Drawing and saving data------------------     %
 
             Et = zeros(size(EE,1),size(EE,2)*2);
             X = Et;
@@ -142,7 +141,7 @@ function InternalFieldOnSphere
            axis('equal');view([0,90]);
            drawnow;
 
-    % Saving the result of calculations 
+    % --------------------- Saving the result of calculations ------------------  %
         print(hf,['Images\',num2str(ia,'%04i'),'.png'],'-dpng','-zbuffer','-r600');
 
         t_toc = toc(t_tic);
